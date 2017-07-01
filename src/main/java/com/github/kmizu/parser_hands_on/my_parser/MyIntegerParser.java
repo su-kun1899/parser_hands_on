@@ -3,15 +3,13 @@ package com.github.kmizu.parser_hands_on.my_parser;
 import com.github.kmizu.parser_hands_on.ParseFailure;
 import com.github.kmizu.parser_hands_on.integer.AbstractIntegerParser;
 
-import java.util.Arrays;
-
 /**
  * @author su-kun1899
  */
 public class MyIntegerParser extends AbstractIntegerParser {
     @Override
     public Integer parse(String input) {
-        if (input.startsWith("0")) {
+        if (!input.equals("0") && input.startsWith("0")) {
             throw new ParseFailure("input starts with zero digit");
         }
 
@@ -19,7 +17,8 @@ public class MyIntegerParser extends AbstractIntegerParser {
         if (containsNotDigit) {
             throw new ParseFailure("input is not digit");
         }
-        return null;
+
+        return Integer.valueOf(input);
     }
 
     private boolean isDigit(char c) {
