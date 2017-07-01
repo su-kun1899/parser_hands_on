@@ -14,7 +14,7 @@ public class MyLimitedExpressionParser extends AbstractLimitedExpressionParser {
 
         for (int i = 0; i < input.length(); i++) {
             char target = input.charAt(i);
-            if (target == '+') {
+            if (isOperand(target)) {
                 position = i;
                 break;
             }
@@ -38,7 +38,7 @@ public class MyLimitedExpressionParser extends AbstractLimitedExpressionParser {
         for (int i = position; i < input.length(); i++) {
             char target = input.charAt(i);
 
-            if (target == '+' || target == '-' || target == '*' || target == '/') {
+            if (isOperand(target)) {
                 return result;
             }
 
@@ -53,5 +53,9 @@ public class MyLimitedExpressionParser extends AbstractLimitedExpressionParser {
 
     private boolean isInteger(char c) {
         return ('0' <= c) && (c <= '9');
+    }
+
+    private boolean isOperand(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/';
     }
 }
