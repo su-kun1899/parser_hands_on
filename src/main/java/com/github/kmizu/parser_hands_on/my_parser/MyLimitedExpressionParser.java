@@ -10,22 +10,37 @@ import com.github.kmizu.parser_hands_on.limited_expression.LimitedExpressionNode
 public class MyLimitedExpressionParser extends AbstractLimitedExpressionParser {
     @Override
     public LimitedExpressionNode parse(String input) {
-        int left = left(input);
+
+        int left = integer(input);
 
         return null;
     }
 
-    private int left(String input) {
+    private int integer(String input) {
+        if (input.startsWith("0")) {
+            if (input.length() != 1) {
+                throw new ParseFailure("input can't starts with zero. input: " + input);
+            }
+        }
+
         int result = 0;
         for (int i = 0; i < input.length(); i++) {
             char target = input.charAt(i);
+
+            if (!isInteger(target)) {
+                throw new ParseFailure("input contains not limited expression node. input: " + input);
+            }
+
             if (target == '+' || target == '-' || target == '*' || target == '/') {
                 return result;
             }
 
             result = result * 10 + (target - '0');
         }
+        return result;
+    }
 
-        throw new ParseFailure("input is not limited expression node. input:" + input);
+    private boolean isInteger(char c) {
+        return ('0' <= c) && (c <= '9');
     }
 }
