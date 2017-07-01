@@ -11,20 +11,21 @@ public class MyExpressionParser extends AbstractExpressionParser {
 
     @Override
     public ExpressionNode parse(String input) {
+        position = 0;
         if (input.startsWith("0")) {
             if (input.length() != 1) {
                 throw new ParseFailure("input can't starts with zero. input: " + input);
             }
         }
 
-        return new ExpressionNode.ValueNode(integer(input));
+        return expression(input);
     }
 
     private boolean isInteger(char c) {
         return ('0' <= c) && (c <= '9');
     }
 
-    public int integer(String input) {
+    public ExpressionNode integer(String input) {
         int result = 0;
         while (position < input.length()) {
             char ch = input.charAt(position);
@@ -33,8 +34,32 @@ public class MyExpressionParser extends AbstractExpressionParser {
                 position++;
                 continue;
             }
-            throw new ParseFailure("input can't contain not integer. input: " + input);
+            break;
         }
-        return result;
+        return ExpressionNode.integer(result);
+    }
+
+    private ExpressionNode expression(String input) {
+        ExpressionNode left = integer(input);
+        if (position < input.length()) {
+            char ch = input.charAt(position);
+            switch (ch) {
+                case '+':
+                    position++;
+                    return left.add(integer(input));
+                case '-':
+                    position++;
+                    return left.subtract(integer(input));
+                case '*':
+                    position++;
+                    return left.multiply(integer(input));
+                case '/':
+                    position++;
+                    return left.divide(integer(input));
+                default:
+                    throw new ParseFailure("input can't contain not integer. input: " + input);
+            }
+        }
+        return left;
     }
 }
