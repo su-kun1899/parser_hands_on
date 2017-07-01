@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 public class MyDigitParserTest {
-    MyDigitParser parser = new MyDigitParser();
+    private MyDigitParser parser = new MyDigitParser();
 
     @Test(expected = ParseFailure.class)
     public void confirmTestFailure1() {
