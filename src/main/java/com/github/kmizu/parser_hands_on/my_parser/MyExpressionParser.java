@@ -25,10 +25,6 @@ public class MyExpressionParser extends AbstractExpressionParser {
         return ('0' <= c) && (c <= '9');
     }
 
-    private boolean isOperand(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/';
-    }
-
     public ExpressionNode integer(String input) {
         int result = 0;
         while (position < input.length()) {
@@ -44,30 +40,62 @@ public class MyExpressionParser extends AbstractExpressionParser {
     }
 
     private ExpressionNode expression(String input) {
-        ExpressionNode result = integer(input);
+        ExpressionNode result = multitive(input);
         while (position < input.length()) {
             char ch = input.charAt(position);
-            if (isOperand(ch)) {
-                position++;
-                switch (ch) {
-                    case '+':
-                        result = result.add(integer(input));
-                        break;
-                    case '-':
-                        result = result.subtract(integer(input));
-                        break;
-                    case '*':
-                        result = result.multiply(integer(input));
-                        break;
-                    case '/':
-                        result = result.divide(integer(input));
-                        break;
-                    default:
-                        throw new ParseFailure("Unsupported operand: " + ch);
-                }
-                continue;
+            switch (ch) {
+                case '+':
+                    position++;
+                    result = result.add(multitive(input));
+                    continue;
+                case '-':
+                    position++;
+                    result = result.subtract(multitive(input));
+                    continue;
+                default:
+                    break;
             }
-            throw new ParseFailure("input can't contain not integer. input: " + input);
+            break;
+        }
+
+        return result;
+    }
+
+    private ExpressionNode primary(String input) {
+        ExpressionNode result;
+        if (position < input.length()) {
+            char ch = input.charAt(position);
+            if (ch == '(') {
+                position++;
+                result = expression(input);
+                if (input.charAt(position) != ')') {
+                    throw new ParseFailure("Illegal brackets. input: " + input);
+                }
+                return result;
+            } else {
+                return integer(input);
+            }
+        }
+        throw new ParseFailure("input can't contain not integer. input: " + input);
+    }
+
+    private ExpressionNode multitive(String input) {
+        ExpressionNode result = primary(input);
+        while (position < input.length()) {
+            char ch = input.charAt(position);
+            switch (ch) {
+                case '*':
+                    position++;
+                    result = result.multiply(primary(input));
+                    continue;
+                case '/':
+                    position++;
+                    result = result.divide(primary(input));
+                    continue;
+                default:
+                    break;
+            }
+            break;
         }
         return result;
     }
