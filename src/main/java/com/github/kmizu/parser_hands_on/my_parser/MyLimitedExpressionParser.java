@@ -10,12 +10,24 @@ import com.github.kmizu.parser_hands_on.limited_expression.LimitedExpressionNode
 public class MyLimitedExpressionParser extends AbstractLimitedExpressionParser {
     @Override
     public LimitedExpressionNode parse(String input) {
-        int left = integer(input);
+        int left = integer(input, 0);
+
+        for (int i = 0; i < input.length(); i++) {
+            char target = input.charAt(i);
+            if (target == '+') {
+                position = i;
+                break;
+            }
+        }
+        if (position != 0) {
+            int right = integer(input, position + 1);
+            return new LimitedExpressionNode.Addition(left, right);
+        }
 
         return new LimitedExpressionNode.ValueNode(left);
     }
 
-    private int integer(String input) {
+    private int integer(String input, int position) {
         if (input.startsWith("0")) {
             if (input.length() != 1) {
                 throw new ParseFailure("input can't starts with zero. input: " + input);
@@ -23,15 +35,15 @@ public class MyLimitedExpressionParser extends AbstractLimitedExpressionParser {
         }
 
         int result = 0;
-        for (int i = 0; i < input.length(); i++) {
+        for (int i = position; i < input.length(); i++) {
             char target = input.charAt(i);
-
-            if (!isInteger(target)) {
-                throw new ParseFailure("input contains not limited expression node. input: " + input);
-            }
 
             if (target == '+' || target == '-' || target == '*' || target == '/') {
                 return result;
+            }
+
+            if (!isInteger(target)) {
+                throw new ParseFailure("input contains not limited expression node. input: " + input);
             }
 
             result = result * 10 + (target - '0');
