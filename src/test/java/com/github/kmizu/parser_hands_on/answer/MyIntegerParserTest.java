@@ -1,6 +1,7 @@
 package com.github.kmizu.parser_hands_on.answer;
 
 import com.github.kmizu.parser_hands_on.ParseFailure;
+import com.github.kmizu.parser_hands_on.my_parser.MyIntegerParser;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
