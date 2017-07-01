@@ -1,13 +1,15 @@
 package com.github.kmizu.parser_hands_on.answer;
 
 import com.github.kmizu.parser_hands_on.ParseFailure;
+import com.github.kmizu.parser_hands_on.my_parser.MyLimitedExpressionParser;
 import org.junit.Test;
 
 import static com.github.kmizu.parser_hands_on.limited_expression.LimitedExpressionNode.*;
 import static org.junit.Assert.assertEquals;
 
 public class MyLimitedExpressionParserTest {
-    MyLimitedExpressionParser parser = new MyLimitedExpressionParser();
+    private MyLimitedExpressionParser parser = new MyLimitedExpressionParser();
+
     @Test(expected = ParseFailure.class)
     public void confirmTestFailure1() {
         parser.parse("ab");
