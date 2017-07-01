@@ -1,16 +1,15 @@
 package com.github.kmizu.parser_hands_on.answer;
 
 import com.github.kmizu.parser_hands_on.ParseFailure;
-import static com.github.kmizu.parser_hands_on.expression.ExpressionNode.integer;
-
-import com.github.kmizu.parser_hands_on.expression.ExpressionNode;
+import com.github.kmizu.parser_hands_on.my_parser.MyExpressionParser;
 import org.junit.Test;
 
+import static com.github.kmizu.parser_hands_on.expression.ExpressionNode.integer;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 
 public class MyExpressionParserTest {
-    MyExpressionParser parser = new MyExpressionParser();
+    private MyExpressionParser parser = new MyExpressionParser();
+
     @Test(expected = ParseFailure.class)
     public void confirmTestFailure1() {
         parser.parse("ab");
