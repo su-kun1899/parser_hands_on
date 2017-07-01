@@ -10,10 +10,9 @@ import com.github.kmizu.parser_hands_on.limited_expression.LimitedExpressionNode
 public class MyLimitedExpressionParser extends AbstractLimitedExpressionParser {
     @Override
     public LimitedExpressionNode parse(String input) {
-
         int left = integer(input);
 
-        return null;
+        return new LimitedExpressionNode.ValueNode(left);
     }
 
     private int integer(String input) {
