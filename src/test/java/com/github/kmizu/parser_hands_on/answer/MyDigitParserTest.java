@@ -1,11 +1,15 @@
 package com.github.kmizu.parser_hands_on.answer;
 
 import com.github.kmizu.parser_hands_on.ParseFailure;
-import static org.junit.Assert.*;
+import com.github.kmizu.parser_hands_on.my_parser.MyDigitParser;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class MyDigitParserTest {
     MyDigitParser parser = new MyDigitParser();
+
     @Test(expected = ParseFailure.class)
     public void confirmTestFailure1() {
         parser.parse("ab");
@@ -43,16 +47,16 @@ public class MyDigitParserTest {
 
     @Test
     public void confirm0IsParsed() {
-        assertEquals((Integer)0, parser.parse("0"));
+        assertEquals((Integer) 0, parser.parse("0"));
     }
 
     @Test
     public void confirm1IsParsed() {
-        assertEquals((Integer)1, parser.parse("1"));
+        assertEquals((Integer) 1, parser.parse("1"));
     }
 
     @Test
     public void confirm9IsParsed() {
-        assertSame((Integer)9, parser.parse("9"));
+        assertSame((Integer) 9, parser.parse("9"));
     }
 }
